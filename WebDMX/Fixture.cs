@@ -2,6 +2,11 @@
 
 namespace WebDMX;
 
+/*
+ * A fixture is exactly what it sounds like, a lighting fixture. See ParCan8Ch
+ * for an example implementation.
+ */
+
 public abstract class Fixture
 {
     
@@ -27,6 +32,6 @@ public abstract class Fixture
     }
     public Channel GetChannel(int channel)
     {
-        return _channels[channel + 1];
+        return _channels[channel - 1];
     }
 }

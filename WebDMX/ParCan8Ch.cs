@@ -4,9 +4,14 @@ using System.Threading.Channels;
 namespace WebDMX;
 
 /*
+ * This fixture is similar to this one here
+ * https://www.bhphotovideo.com/lit_files/483154.pdf
+ *
+ * The channel specifications (on page 4) are slightly different from what I have.
+ * 
  * A physical fixture. The channels are as follows:
  * 1: Master Dimmer
- * 2-4: Not important
+ * 2-4: I do not want to implement now (macros, strobe)
  * 5: Red
  * 6: Green
  * 7: Blue

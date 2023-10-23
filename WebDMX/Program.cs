@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Drawing;
 using WebDMX;
 
 /*
@@ -17,6 +18,13 @@ class Program
     
     static void Main(string[] args)
     {
+        Universe1.AddConnection(new ArduinoConnection("COM6", 250000));
+        ParCan8Ch parCan8Ch = new ParCan8Ch();
+        Universe1.AddFixture(parCan8Ch, 1);
+        parCan8Ch.SetBrightness(255);
+        parCan8Ch.SetColor(Color.Aqua);
+        Universe1.SendData();
+        Universe1.PrintDebug();
         try
         {
             new WebInterface(8008);

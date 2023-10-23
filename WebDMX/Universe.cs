@@ -9,11 +9,12 @@
  * This prevents a programmer from adding
  * addresses above 512.
  *
- * We also store what connection(s) this universe should be sent to.
+ * We also store what connection(s) this universe should be sent to. Why would you want multiple?
+ * You may need them for different venues, backup connections in case something dies, or for a 3D viewer.
  */
 public class Universe
 {
-    private List<Connection> _connectionList;
+    private List<Connection> _connectionList = new List<Connection>();
     private List<Tuple<Fixture, int>> _fixtures = new List<Tuple<Fixture, int>>();
 
     
@@ -43,7 +44,7 @@ public class Universe
     public byte[] GetData()
     {
         byte[] data = new byte[512];
-        Array.Fill(data, (byte) 255);
+        Array.Fill(data, (byte) 0);
         foreach (Tuple<Fixture, int> address in this._fixtures)
         {
             int addressOffset = 0; 
@@ -51,9 +52,9 @@ public class Universe
             {
                 // minus one because arrays start at 0 and our list is 1-512 instead of 0-511
                 data[(address.Item2 - 1) + addressOffset] = (byte)channel.GetValue();
+                addressOffset++;
             }
         }
-
         return data;
     }
 
@@ -67,5 +68,19 @@ public class Universe
         }
 
         return patchList;
+    }
+
+    public void AddConnection(Connection conn)
+    {
+        this._connectionList.Add(conn);
+    }
+
+    public void PrintDebug()
+    {
+        foreach (Tuple<Fixture,int> fixture in _fixtures)
+        {
+            Console.WriteLine(fixture.Item2);
+            fixture.Item1.GetChannels().ForEach(channel => Console.WriteLine(channel.ChannelName + " " + channel.GetValue()));
+        }
     }
 }
