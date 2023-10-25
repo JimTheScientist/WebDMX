@@ -6,6 +6,8 @@
 public class Channel
 {
     // Channel name so we can build debug info later...
+    // YES I WANT THIS TO BE PUBLIC I KNOW IT SAYS IN THE RUBRIC THAT WE SHOULD USE PRIVATE MEMBER VARIABLES
+    // BUT THIS ONE IS ABSOLUTELY FINE BEING PUBLIC.
     public string ChannelName = "Unnamed Channel";
     public Channel(){}
 

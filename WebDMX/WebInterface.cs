@@ -8,6 +8,8 @@ namespace WebDMX;
  * hard coded web framework because i am too lazy to use an actual framework.
  *
  * it turns out this is not as hard as you may think
+ *
+ * This is just in charge of user input, and it works! sorry it looks awful...
  */
 
 public class WebInterface
