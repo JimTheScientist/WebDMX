@@ -21,17 +21,33 @@ public class ArduinoConnection : Connection
     public override void SendData(byte[] data)
     {
         Console.WriteLine(data);
-        _serialPort.Open();
-        _serialPort.DiscardOutBuffer(); // TODO make this only happen on startup, along with Open and DisardInBuffer, and then create open and close methods in connection class
-        _serialPort.DiscardInBuffer();
-        Thread.Sleep(2000);
         _serialPort.Write(data,0,512);
-        _serialPort.Close();
 
-            //for (int i = 1; i<=512; i++)
+        //for (int i = 1; i<=512; i++)
         //{
         //    _serialPort.Write(data[i-1]);
         //    Console.WriteLine(Convert.ToString(data[i-1]));
         //}
+    }
+
+    /*
+     * Unfortunately we can't force the compiler / LSP to make programmers write exceptions when calling something like
+     * this like we can in java with the "throws" declaration. *sigh*
+     *
+     * (that means use a try catch future me)
+     */
+    public override void Enable()
+    {
+        _serialPort.Open();
+        _serialPort.DiscardOutBuffer();
+        _serialPort.DiscardInBuffer();
+        Thread.Sleep(2000);
+        this._enabled = true;
+    }
+
+    public override void Disable()
+    {
+        _serialPort.Close();
+        this._enabled = false;
     }
 }

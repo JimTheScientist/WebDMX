@@ -15,16 +15,13 @@ class Program
     // Temporary universe
 
     public static Universe Universe1 = new Universe();
-    
+
     static void Main(string[] args)
     {
-        Universe1.AddConnection(new ArduinoConnection("COM6", 250000));
-        ParCan8Ch parCan8Ch = new ParCan8Ch();
-        Universe1.AddFixture(parCan8Ch, 1);
-        parCan8Ch.SetBrightness(255);
-        parCan8Ch.SetColor(Color.Aqua);
-        Universe1.SendData();
-        Universe1.PrintDebug();
+        // The below lines are uncommented because if you don't have an arduino it'll just throw errors, but the program works without it.
+        //Connection conn = new ArduinoConnection("COM6", 250000);
+        //conn.Enable();
+        //Universe1.AddConnection(conn);
         try
         {
             new WebInterface(8008);

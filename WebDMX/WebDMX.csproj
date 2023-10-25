@@ -12,4 +12,10 @@
       <PackageReference Include="System.IO.Ports" Version="7.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="obj\project.assets.json" />
+      <Content Include="obj\project.nuget.cache" />
+      <Content Include="obj\project.packagespec.json" />
+    </ItemGroup>
+
 </Project>

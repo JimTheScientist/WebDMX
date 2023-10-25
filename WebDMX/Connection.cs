@@ -13,4 +13,14 @@
 public abstract class Connection
 {
     abstract public void SendData(byte[] data);
+
+    protected bool _enabled = false;
+
+    abstract public void Enable();
+    abstract public void Disable();
+
+    public bool GetEnabled()
+    {
+        return _enabled;
+    }
 }

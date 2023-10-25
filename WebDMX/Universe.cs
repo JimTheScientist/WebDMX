@@ -15,7 +15,8 @@
 public class Universe
 {
     private List<Connection> _connectionList = new List<Connection>();
-    private List<Tuple<Fixture, int>> _fixtures = new List<Tuple<Fixture, int>>();
+    // fixture, start add, FID
+    private List<Tuple<Fixture, int, long>> _fixtures = new List<Tuple<Fixture, int, long>>();
 
     
     // TODO CHECKS TO MAKE SURE FIXTURES DON'T OVERLAP!!!!!
@@ -25,14 +26,18 @@ public class Universe
         {
             throw new Exception("Starting address must be between 1-512");
         }
-        _fixtures.Add(new Tuple<Fixture, int>(fixture, startingAddress));
+        _fixtures.Add(new Tuple<Fixture, int, long>(fixture, startingAddress, new Random().NextInt64()));
     }
 
     public void SendData()
     {
         foreach (Connection connection in _connectionList)
         {
-            connection.SendData(GetData());
+            if (connection.GetEnabled())
+            {
+                connection.SendData(GetData());  
+            }
+
         }
     }
 
@@ -45,7 +50,7 @@ public class Universe
     {
         byte[] data = new byte[512];
         Array.Fill(data, (byte) 0);
-        foreach (Tuple<Fixture, int> address in this._fixtures)
+        foreach (Tuple<Fixture, int, long> address in this._fixtures)
         {
             int addressOffset = 0; 
             foreach (Channel channel in address.Item1.GetChannels())
@@ -59,12 +64,12 @@ public class Universe
     }
 
     // Returns a "patch list", which is a list of each fixture type and the addresses they occupy.
-    public List<Tuple<string, int, int>> GetPatchList()
+    public List<Tuple<Fixture, int, int, long>> GetPatchList()
     {
-        List<Tuple<string, int, int>> patchList = new List<Tuple<string, int, int>>();
-        foreach (Tuple<Fixture,int> fixture in _fixtures)
+        List<Tuple<Fixture, int, int, long>> patchList = new List<Tuple<Fixture, int, int, long>>();
+        foreach (Tuple<Fixture,int, long> fixture in _fixtures)
         {
-            patchList.Add(new Tuple<string, int, int>(fixture.Item1.GetType().Name, fixture.Item2, fixture.Item1.GetAddressSpace())); 
+            patchList.Add(new Tuple<Fixture, int, int, long>(fixture.Item1, fixture.Item2, fixture.Item1.GetAddressSpace(), fixture.Item3)); 
         }
 
         return patchList;
@@ -77,7 +82,7 @@ public class Universe
 
     public void PrintDebug()
     {
-        foreach (Tuple<Fixture,int> fixture in _fixtures)
+        foreach (Tuple<Fixture,int, long> fixture in _fixtures)
         {
             Console.WriteLine(fixture.Item2);
             fixture.Item1.GetChannels().ForEach(channel => Console.WriteLine(channel.ChannelName + " " + channel.GetValue()));
